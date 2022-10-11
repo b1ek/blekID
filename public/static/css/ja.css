@@ -1,0 +1,23 @@
+html, body {
+    background: url(/static/sky.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+@font-face {
+    src: url(/static/locale/ja.otf);
+    font-family: 'Japanese';
+}
+
+.locale-font, .locale-font * {
+    font-size: 12pt !important;
+}
+.center-login-form {
+    width:400px;
+}
+.mobile-qr {
+    left: 400px;
+}
+.mobile-qr img {
+    width: 128px;
+}

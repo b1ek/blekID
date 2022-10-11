@@ -1,0 +1,6 @@
+html, body {
+    background: url(/static/soup.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}

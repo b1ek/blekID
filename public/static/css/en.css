@@ -1,0 +1,13 @@
+html, body {
+    background: url(/static/mountain.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.center-login-form {
+    width:400px;
+}
+.mobile-qr {
+    left: 400px;
+}

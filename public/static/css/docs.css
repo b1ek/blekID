@@ -1,0 +1,26 @@
+span.code {
+    background: #e2e4e2;
+    border: 1px solid #c2c4c2;
+    border-radius: 4px;
+    padding: 2px 3px;
+    display: inline-block;
+    font-family: monospace;
+    font-size: 75%;
+    user-select: text;
+}
+table {
+    border-collapse: collapse;
+    border: 1px solid #c2c4c2;
+}
+th, td {
+    border-collapse: collapse;
+    border: 1px solid #c2c4c2;
+    padding: 4px 10px;
+}
+pre {
+    background: #e2e4e2;
+    border: 1px solid #c2c4c2;
+    border-radius: 3px;
+    display: inline-block;
+    padding: 8px 16px;
+}
