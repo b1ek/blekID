@@ -10,12 +10,12 @@ class Session {
      * Create a user session.
      * @param $login Login of a user
      * @param $pass Password hash
-     * @param $hash Defines whether the password needs to be hashed before inserting into the database.
+     * @param $hash Defines whether the password was hashed only on client side.
      */
-    public static function make($login, $pass, $appid, $hash = 0) {
+    public static function make($login, $pass, $appid, $hash = true) {
         $r = request();
 
-        if ($hash == 0) { // Password was hashed only on client side
+        if ($hash) { // Password was hashed only on client side
             $pass = Password::hash($pass, $login);
         }
 
@@ -75,12 +75,14 @@ class Session {
              * Altough there could be some cases where you should revoke all sessions of a user (for example, before deleting or freezing an account),
              * so this feature cannot be deleted.
              *
-             * Please, make sure that you absolutely can't use an app id in this situation.
-             * 
+             * Please, make sure that you absolutely can't use an app id in this situation, and only then
+             * comment out the line with an exception.
+             *
              * All pull requests that throw this warning will be a subject to review, and if you are using this in your PR,
              * please, save you and us some trouble - explain it in the PR readme.
              */
-            trigger_error('App ID is not set, this is not a good practice. Please specify app ID unless you absolutely can\'t.', E_USER_WARNING);
+            throw Exception('App ID is not set. Please read /app/Session.php at line 68.');
+
             DB::table('user_session')->where('key', $key)->update(array('active' => false));
         }
         else

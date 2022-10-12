@@ -3,6 +3,12 @@
 
 <head>
 
+<title>{!! __('front_page.title') !!}</title>
+<link rel="apple-touch-icon" sizes="180x180" href="/static/ico/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/static/ico/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/static/ico/favicon-16x16.png">
+<link rel="manifest" href="/static/ico/site.webmanifest">
+
 <style>
 @font-face {
     src: url(/static/opensans.ttf);
@@ -29,7 +35,7 @@
 <h4 align='center'>{!! __('front_page.p2') !!}</h4>
 <p align='center'>{!! __('front_page.p3') !!}</p>
 
-<h4 align='center'>C{!! __('front_page.p4') !!}</h4>
+<h4 align='center'>{!! __('front_page.p4') !!}</h4>
 <p align='center'>{!! __('front_page.p5') !!}</p>
 
 </div>

@@ -50,10 +50,8 @@ $locale = config('app.locale');
 
 <p class='footerText'>blek! ID version {{ENV('APP_VERSION', '?')}} | Forged in the depths of hell by blek!</p>
 {{-- Scripts --}}
-<!-- Scripts!! -->
 <x-embed-script src='/static/js/sha512.js'></x-embed-script>
 <x-embed-script src='/static/js/main.js'></x-embed-script>
-<x-embed-script src='/static/js/auth.js'></x-embed-script>
 </body>
 
 </html>

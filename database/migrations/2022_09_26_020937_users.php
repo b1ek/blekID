@@ -17,6 +17,7 @@ return new class extends Migration
             $blue->id('id');
             $blue->bigInteger('registrator');
             $blue->string('login');
+            $blue->string('email');
             $blue->string('ip', 45);
             $blue->string('user-agent');
             $blue->bigInteger('created');

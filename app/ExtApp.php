@@ -11,9 +11,9 @@ class ExtApp {
     /**
      * Get app redirect
      */
-    public static function getRedirect($appid, $id = 'auth') {
+    public static function getRedirect($appid, $id = 'success') {
         $redir = DB::table('app_redirect')->where('appid', $appid)->where('id', $id);
-        if ($redir->count() != 0) return $redir[0];
+        if ($redir->count() != 0) return $redir->get()[0]->link;
         return false;
     }
 }

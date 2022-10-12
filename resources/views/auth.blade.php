@@ -71,4 +71,5 @@
             @endif
         </p>
     </div>
+    <x-embed-script src='/static/js/auth.js'></x-embed-script>
 </x-templates.master>

@@ -19,6 +19,7 @@ return new class extends Migration
             ->insert(array(
                 'registrator' => 1,
                 'login' => 'blek!',
+                'email' => 'me@blek.codes',
                 'ip' => '0.0.0.0',
                 'user-agent' => $ua,
                 'created' => time(),

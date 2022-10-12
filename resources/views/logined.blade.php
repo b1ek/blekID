@@ -20,18 +20,14 @@ use Illuminate\Support\Facades\DB;
             </p>
         </div>
     </div>
-    @if ($appid != 1)
+
     <script>
     setTimeout(function() {
         @php
-        $app_url = DB::table('app_redirect')->where('appid', $appid)->where('id', 'success');
-        if (count($app_url) == 0) {
-            abort(500);
-        }
-        $red_link = $app_url[0]->link . '?' . request()->session()->get('user_session');
+        $red_link = \App\ExtApp::getRedirect($appid) . "?from=" . $from . "&session=" . request()->session()->get('user_session');
         @endphp
         window.location.href = '{!! $red_link !!}';
     }, 1000);
     </script>
-    @endif
+
 </x-templates.master>

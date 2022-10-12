@@ -12,5 +12,6 @@ return array(
     'bottom_text' => 'All your passwords are end-to-end encrypted.',
     'lang_sel' => 'Select your language',
     'qrcode' => 'Use mobile app to scan the code for instant login',
-    'no_app_qr' => 'Service is down'
+    'no_app_qr' => 'Service is down',
+    'redirect' => '<p>Redirecting.. <a href=\':link\'>Click here</a> if nothing happens.</p>',
 );
