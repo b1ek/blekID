@@ -13,11 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user_data', function(Blueprint $blue) {
-            $blue->bigInteger('uid');
-            $blue->bigInteger('appid');
+        Schema::create('user_pass_resets', function (Blueprint $blue) {
             $blue->string('key');
-            $blue->text('value');
+            $blue->bigInteger('uid');
+            $blue->bigInteger('expires');
         });
     }
 
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_data');
+        Schema::dropIfExists('user_pass_resets');
     }
 };

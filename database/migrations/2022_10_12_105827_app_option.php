@@ -13,11 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user_data', function(Blueprint $blue) {
-            $blue->bigInteger('uid');
+        Schema::create('app_option', function(Blueprint $blue) {
             $blue->bigInteger('appid');
             $blue->string('key');
-            $blue->text('value');
+            $blue->string('value');
         });
     }
 
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_data');
+        Schema::dropIfExists('app_option');
     }
 };

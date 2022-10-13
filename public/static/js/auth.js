@@ -9,6 +9,12 @@ document.getElementById('pass').onchange = function() {
     setTimeout(hash_pwd, 32);
 };
 
+// login button
+document.getElementById('login_btn').onclick = function() {
+    document.getElementById('action').value = 'login';
+    document.getElementById('main-form').submit();
+}
+
 // sign up button
 document.getElementById('signup_btn').onclick = function() {
     document.getElementById('action').value = 'signup';

@@ -11,6 +11,9 @@ class AuthController extends Controller
 
     }
     public function index() {
+
+        abort(404);
+
         if (!ENV('APP_DEBUG')) return abort(404);
         return view('auth', array('locales' => config('app.locales')));
     }

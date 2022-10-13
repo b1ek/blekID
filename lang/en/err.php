@@ -3,6 +3,10 @@
 $reload = 'Reload the page. If it doesn\'t work, contact the administrator.';
 $malf = 'If you see an error page with this code, the website should be malfunctioning.';
 
+if (!isset($_SERVER['HTTP_LOCATION'])) {
+    $_SERVER['HTTP_LOCATION'] = '?';
+}
+
 return array(
 
     // 1xx errors

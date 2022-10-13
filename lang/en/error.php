@@ -1,5 +1,6 @@
 <?php
 
 return array(
-    'invalid_pass' => 'Invalid login or password.'
+    'invalid_pass' => 'Invalid password.',
+    'no_user' => 'Invalid login.'
 );

@@ -14,26 +14,32 @@ return new class extends Migration
      */
     public function up()
     {
+        if (!ENV('APP_DEBUG', false)) return;
+
         $ua = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.111 Safari/537.36';
-        DB::table('users')
-            ->insert(array(
-                'registrator' => 1,
-                'login' => 'blek!',
-                'email' => 'me@blek.codes',
-                'ip' => '0.0.0.0',
-                'user-agent' => $ua,
-                'created' => time(),
-                'deleted' => 0
-            ));
-        DB::table('user_password')
-            ->insert(array(
-                'uid' => 1,
-                'hash' => \App\Password::hash(hash('sha512', '123'), 'blek!'),
-                'ip' => '0.0.0.0',
-                'user-agent' => $ua,
-                'created' => time(),
-                'active' => true
-            ));
+        DB::table('users')->insert(array(
+            'registrator' => 1,
+            'login' => 'blek!',
+            'email' => 'me@blek.codes',
+            'ip' => '0.0.0.0',
+            'user-agent' => $ua,
+            'created' => time(),
+            'deleted' => 0
+        ));
+        DB::table('user_password')->insert(array(
+            'uid' => 1,
+            'hash' => \App\Password::hash(hash('sha512', '123'), 'blek!'),
+            'ip' => '0.0.0.0',
+            'user-agent' => $ua,
+            'created' => time(),
+            'active' => true
+        ));
+        // make this user an app's admin
+        DB::table('app_option')->insert(array(
+            'appid' => 1,
+            'key' => 'admin',
+            'value' => '1'
+        ));
     }
 
     /**

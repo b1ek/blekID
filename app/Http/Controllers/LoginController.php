@@ -16,7 +16,7 @@ class LoginController extends Controller
             // login is a string
             'login' => 'required|string',
             // password must be a sha512 string
-            'password' => 'required|regex:/^[a-f0-9]{128}i/',
+            'password' => 'required|regex:/^[a-f0-9]{128}/i',
             'appid' => 'required|integer'
         ));
 
@@ -30,34 +30,61 @@ class LoginController extends Controller
             if ($session->count() != 0) return view('logined', array('appid' => $_GET['appid'], 'from' => 'login'));
         }
 
+        $users = DB::table('users')
+            ->where('login', $data['login'])
+            ->get();
+
+        if (count($users) == 0) {
+            return view('auth', array('appid' => $data['appid'], 'errors' => array(__('error.no_user'))));
+        }
+
         // register a new session
         $token = \App\Session::make($data['login'], $data['password'], $data['appid']);
-        $hash = \App\Password::hash($data['password']);
+        $hash = \App\Password::hash($data['password'], $data['login']);
 
         if ($token !== false) {
             $r->session()->put('used_pass', $hash);
             return view('logined', array('appid' => $_GET['appid'], 'from' => 'login'));
         }
 
-        $r->session()->put('used_pass', $hash);
-        return view('auth', array('errors' => array(__('error.invalid_pass'))));
+        return view('auth', array('appid' => $data['appid'], 'errors' => array(__('error.invalid_pass'))));
     }
     public function signup(Request $r) {
+
+        if (!isset($_GET['appid'])) abort(400);
+
+        $reg_disabled = DB::table('app_option')->where('appid', $_GET['appid'])->where('key', 'reg_disabled')->count();
+        if ($reg_disabled) abort(403);
 
         if (!isset($_GET['complete'])) {
             return view('signup');
         }
 
+        $invonly = DB::table('app_invites')->where('appid', $_GET['appid'])->count() != 0;
+
         $data = $r->validate(array(
-            'login' => 'required|string',
+            'login' => 'required',
             'password' => 'required|regex:/^[a-f0-9]{128}/i',
             'appid' => 'required|integer',
-            'email' => 'required|email:rfc,dns',
-            'name' => 'required|string'
+            'email' => 'required|string',
+            'name' => 'required|string',
+            'invite' => ($invonly ? 'required|' : '') . 'string'
         ));
+
+
+        if ($invonly) {
+            $valid = DB::table('app_invites')->where('appid', $data['appid'])->where('invite_key', $data['invite'])->count() != 0;
+            if (!$valid) {
+                return view('signup', array('err' => 'Invalid invite code.'));
+            }
+        }
 
         if ($r->session()->has('user_session')) {
             \App\Session::revoke();
+        }
+
+        if (DB::table('users')->where('login', $data['login'])->count() != 0) {
+            return view('signup', array('err' => 'This login is already used. Try ' . $data['login'] . '_' . rand(1000, 9999) . ' instead.'));
         }
 
         // Make the account
@@ -78,12 +105,12 @@ class LoginController extends Controller
         $key = \App\Session::make($data['login'], $pass, $data['appid'], false);
 
         return view('logined', array('appid' => $_GET['appid'], 'from' => 'signup'));
-
-        return Redirect::away(\App\ExtApp::getRedirect($data['appid']) . '?from=singup&session=' . urlencode($key));
     }
 
 
     public function index(Request $r) {
+
+        if (!isset($_GET['action'])) return '';
 
         if ($_GET['action'] == 'login') {
             return $this->login($r);

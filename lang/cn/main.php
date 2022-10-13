@@ -12,5 +12,7 @@ return array(
     'bottom_text' => '密码加密的',
     'lang_sel' => '改语',
     'qrcode' => '要登录，用应用程序扫描QR码',
-    'no_app_qr' => '今天不工作'
+    'no_app_qr' => '今天不工作',
+    'redirect' => '正在重定向，请等待。。 如果没有发生，点击<a href=\':link\'>这里</a>',
+    'forgot' => '忘记密码？'
 );

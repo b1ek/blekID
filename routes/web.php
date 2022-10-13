@@ -22,8 +22,10 @@ use Illuminate\Http\Request;
 Route::apiResource('/', \App\Http\Controllers\HomePageController::class);
 Route::apiResource('/auth', \App\Http\Controllers\AuthController::class);
 Route::apiResource('/login', \App\Http\Controllers\LoginController::class);
+Route::apiResource('/signup', \App\Http\Controllers\LoginController::class);
 Route::apiResource('/qr', \App\Http\Controllers\QrCodeController::class);
 Route::apiResource('/success', \App\Http\Controllers\ResourceController::class);
+Route::get('/admin', function() {return 'in dev';});
 
 Route::view('/api/docs', 'api_docs');
 
@@ -43,4 +45,22 @@ Route::get('/migrate', function() {
 Route::get('/debug', function() { // this is needed for debug purposes
     if (!ENV('APP_DEBUG', false)) abort(404);
     abort(400);
+});
+
+Route::get('/logined', function() {
+    return view('logined', array('showcase' => true, 'appid' => 1));
+});
+
+Route::get('/success', function() {
+    return view('now_what');
+});
+
+Route::get('/logout', function() {
+    if (request()->session()->has('user_session')) {
+        \App\Session::revoke();
+        request()->session()->forget('user_session');
+        request()->session()->forget('used_pass');
+    }
+
+    return view('logged_out');
 });

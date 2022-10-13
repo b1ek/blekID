@@ -1,3 +1,10 @@
+@php
+
+$reg_disabled = DB::table('app_option')->where('appid', $appid)->where('key', 'reg_disabled')->count();
+$invonly = DB::table('app_option')->where('appid', $appid)->where('key', 'invonly')->count();
+
+@endphp
+
 <x-templates.master><x-slot:head><script src='/static/auth.js'></script></x-slot:head>
     <div class='locale-font'>
         <p style='font-size:9pt;text-align:center;color:#777777;margin:6px 0;padding:0'>
@@ -37,11 +44,19 @@
                 <input type='checkbox' id='remember' name='remember'{{isset($_GET['remember']) ? ($_GET['remember'] == 'on' ? 'checked' : '') : ''}}></input><label for='remember' style='user-select:none'> {{__('main.remember')}}</label><br/>
                 --}}
                 <br/>
-                <input type='submit' action='none' value='{{__('main.login_btn')}}'></input>
-                <input type='button' id='signup_btn' value='{{__('main.signup_btn')}}'></input>
+                <input type='button' id='login_btn' value='{{__('main.login_btn')}}'></input>
+                <input type='button' id='signup_btn'{{--
+
+                --}} value='{{__('main.signup_btn')}}{!! $invonly ? ' ' . __('main.invonly') : '' !!}' {{--
+
+                     If registration is disabled
+
+                --}}{!! $reg_disabled ? 'disabled' : '' !!}{{--
+
+                --}}></input>
             </p>
             <p>
-                <a href='/reset'>Forgot your password?</a>
+                <a href='/reset'>{{__('main.forgot')}}</a>
             </p>
         </form>
         @if (isset($errors))

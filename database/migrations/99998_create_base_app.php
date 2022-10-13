@@ -27,10 +27,15 @@ return new class extends Migration
             'created' => time(),
             'secret' => $secret
         ));
+        /*DB::table('app_option')->insert(array(
+            'appid' => 1,
+            'key' => 'reg_disabled',
+            'value' => 'true'
+        ));*/
         DB::table('app_redirect')->insert(array(
             'appid' => 1,
-            'link' => ENV('APP_DEBUG', false) ? 'http:\/\/local.blek.codes:10084/auth/1' : 'http:\/\/id.blek.codes/auth/1',
-            'id' => 'success'
+            'link' => '/admin',
+            'id' => 'success',
         ));
     }
 
