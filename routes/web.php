@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Http\Request;
+use App\Http\Middleware\AdminSecurity;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,10 +48,6 @@ Route::get('/debug', function() { // this is needed for debug purposes
     abort(400);
 });
 
-Route::get('/logined', function() {
-    return view('logined', array('showcase' => true, 'appid' => 1));
-});
-
 Route::get('/success', function() {
     return view('now_what');
 });
@@ -63,4 +60,11 @@ Route::get('/logout', function() {
     }
 
     return view('logged_out');
+});
+
+Route::middleware(AdminSecurity::class)->get('/admin', function() {
+    return view('admin');
+});
+Route::middleware(AdminSecurity::class)->get('/admin/{panel}', function (string $panel) {
+    return view('admin', array('panel' => $panel));
 });

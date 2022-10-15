@@ -24,6 +24,7 @@ return new class extends Migration
             // Timestamp when (if) the account was deleted
             // If its not, should be set to 0
             $blue->bigInteger('deleted');
+            $blue->boolean('frozen')->default(false);
         });
     }
 

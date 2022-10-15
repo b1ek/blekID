@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\AdminSecurity;
 
 /*
 |--------------------------------------------------------------------------
@@ -82,4 +83,39 @@ Route::get('login', function (Request $r) {
     }
 
     return $token;
+});
+
+Route::middleware('web', AdminSecurity::class)->prefix('admin')->group(function() {
+
+    Route::get('delete/{user}', function (string $user) {
+        DB::table('users')->where('id', $user)->update(array('deleted' => time()));
+    });
+
+    Route::get('change_pass/{user}/{pass}', function (string $user, string $pass) {
+        $users = DB::table('users')->where('id', $user)->get();
+        // if user id is invalid
+        if (count($users) == 0) abort(400);
+        $uuser = $users[0];
+
+        $delete = DB::table('user_password')->where('uid', $uuser->id)->update(array(
+            'active' => false
+        ));
+        if (!$delete) return -1;
+
+        $r = request();
+
+        $insert = DB::table('user_password')->insert(array(
+            'uid' => $uuser->id,
+            'hash' => \App\Password::hash($pass, $user),
+            'ip' => $r->ip(),
+            'user-agent' => $r->server('HTTP_USER_AGENT'),
+            'created' => time(),
+            'active' => true
+        ));
+        if (!$insert) return -1;
+        return 0;
+
+    });
+
+
 });
