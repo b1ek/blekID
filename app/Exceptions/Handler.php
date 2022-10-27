@@ -63,10 +63,9 @@ class Handler extends ExceptionHandler
         if (($e instanceof \Error)) {
             // If 500 in development
             if (ENV('APP_DEBUG', false)) return parent::render($r, $e);
-            // return 'This page isn\'t working. Please try some other time.';
         }
 
         // In any other case, do default error page
-        return response()->view('errors.0', array('exception' => $e));
+        return response(view('errors.0', array('exception' => $e)), $e->getStatusCode());
     }
 }

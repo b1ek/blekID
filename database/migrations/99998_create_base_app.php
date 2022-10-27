@@ -27,11 +27,11 @@ return new class extends Migration
             'created' => time(),
             'secret' => $secret
         ));
-        DB::table('app_option')->insert(array(
+        /*DB::table('app_option')->insert(array(
             'appid' => 1,
             'key' => 'reg_disabled',
             'value' => 'true'
-        ));
+        ));*/
         DB::table('app_redirect')->insert(array(
             'appid' => 1,
             'link' => '/admin',

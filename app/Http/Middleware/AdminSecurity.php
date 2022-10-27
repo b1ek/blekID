@@ -17,11 +17,14 @@ class AdminSecurity
      */
     public function handle(Request $request, Closure $next)
     {
+        # if (ENV('APP_DEBUG')) return $next($request);
+
         if (!$request->session()->has('user_session')) abort(403);
         $s = $request->session();
 
         $session = \App\Session::check($s->get('user_session'), $s->get('used_pass'), true);
 
+        // If the session exists
         if (gettype($session) != 'object') {
             if ($session == 3) {
                 $ss = DB::table('user_session')->where('key', $s->get('user_session'))->get()[0];
@@ -33,6 +36,7 @@ class AdminSecurity
             abort(401);
         }
 
+        // get appid
         $appid = $session->appid;
         if (isset($_GET['appid'])) $appid = intval($_GET['appid']);
 

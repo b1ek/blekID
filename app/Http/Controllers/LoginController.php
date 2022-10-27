@@ -11,6 +11,19 @@ class LoginController extends Controller
 
     public function login(Request $r) {
 
+        // If user is logged in already
+        if ($r->session()->has('user_session')) {
+
+            $session = DB::table('user_session')->where('key', $r->session()->get('user_session'))->get();
+
+            if (count($session) == 0) {
+                \App\Session::revoke();
+                return redirect()->to(url('/auth/' . $_GET['appid']));
+            }
+
+            return view('logined', array('appid' => $_GET['appid'], 'from' => 'login'));
+        }
+
         // get http args
         $data = $r->validate(array(
             // login is a string
@@ -20,20 +33,10 @@ class LoginController extends Controller
             'appid' => 'required|integer'
         ));
 
-        // If user is logged in
-        if ($r->session()->has('user_session')) {
-            if (ENV('APP_DEBUG', false)) {
-                \App\Session::revoke();
-            }
-
-            $session = DB::table('user_session')->where('key', $r->session()->get('user_session'));
-            if ($session->count() != 0) return view('logined', array('appid' => $_GET['appid'], 'from' => 'login'));
-        }
-
+        // check if login is the right login
         $users = DB::table('users')
             ->where('login', $data['login'])
             ->get();
-
         if (count($users) == 0) {
             return view('auth', array('appid' => $data['appid'], 'errors' => array(__('error.no_user'))));
         }
@@ -42,12 +45,13 @@ class LoginController extends Controller
         $token = \App\Session::make($data['login'], $data['password'], $data['appid']);
         $hash = \App\Password::hash($data['password'], $data['login']);
 
-        if ($token !== false) {
-            $r->session()->put('used_pass', $hash);
-            return view('logined', array('appid' => $_GET['appid'], 'from' => 'login'));
-        }
 
-        return view('auth', array('appid' => $data['appid'], 'errors' => array(__('error.invalid_pass'))));
+        if ($token == false) {
+            return view('auth', array('appid' => $data['appid'], 'errors' => array(__('error.invalid_pass'))));
+        }
+        $r->session()->put('used_pass', $hash);
+        return view('logined', array('appid' => $_GET['appid'], 'from' => 'login'));
+
     }
     public function signup(Request $r) {
 

@@ -66,6 +66,9 @@ $invonly = DB::table('app_option')->where('appid', $appid)->where('key', 'invonl
         @endforeach
 
         @endif
+        @if (request()->session()->has('user_session'))
+            <p align='center'>You are logged in</p>
+        @endif
         <p style='text-align:center;font-size:11px;color:#292929;user-select:none;filter:blur(0.15px)'><img src='/static/lock.png'></img> {{__('main.bottom_text')}}</p>
     </div>
     <div class='mobile-qr'>

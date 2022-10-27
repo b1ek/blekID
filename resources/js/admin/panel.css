@@ -1,0 +1,50 @@
+.panel_main {
+    text-align: center;
+    width: 512px;
+    height: 100%;
+    border: 1px solid #c2c4c2;
+    box-shadow: 0 1px 1px #33333320;
+    border-radius: 6px 6px 0 0;
+}
+.panel_main .title {
+    margin: 0;
+    padding: 4px;
+    background: linear-gradient(0, #a2cade, #b5e6ff);
+}
+.panel_main table {
+    min-width: 100%;
+    min-height: 300px;
+    border-collapse: collapse;
+}
+.panel_main table tr {
+    min-width: 100%;
+    min-height: 100%;
+}
+.panel_main table tr td {
+    vertical-align: top;
+    text-align: left;
+}
+.panel.left {
+    padding: 8px 6px;
+    min-width: 40%;
+    max-width: 40%;
+    min-height: 300px;
+    background: #f2f4f2;
+    border-right: 1px solid #c2c4c2;
+    font-size: 9pt;
+}
+.panel.right {
+    padding: 8px 6px;
+    padding: 0;
+    min-width: 400px;
+    max-width: 400px;
+    min-height: 300px;
+    background: #fafcfa;
+    overflow: auto;
+    overflow-x: scroll;
+}
+.panel.left ul {
+    padding: 0;
+    margin: 0;
+    list-style: none
+}

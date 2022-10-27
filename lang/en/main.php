@@ -24,4 +24,6 @@ return array(
     'invonly' => '(invite only)',
     'invite' => 'Invite code',
     'no_link' => 'Sorry, but you can\'t be redirected. Please contact administrator of :site.',
+    'reset' => 'To reset the password, fill out the form',
+    'reset_title' => 'Password reset',
 );

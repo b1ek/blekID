@@ -7,6 +7,14 @@
 If you know any languages other than english, please consider contributing to translating blek! ID. All translation files are stored in `/lang`. To add a new translation, fork the project, push your commits and create a pull request.<br/>
 Translated languages are: Japanese, Russian, Ukrainian, Chinese, English
 
+## Building
+```
+cd to/the/directory
+composer install
+docker-compose up -d
+curl localhost:10084
+```
+
 ## The mission of the project
 The mission is to eliminate the need of remembering the login and password to each website, centralize all user accounts and to make it easier to work with accounts for developers.
 

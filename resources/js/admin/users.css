@@ -1,0 +1,15 @@
+h2 {
+    font-size: 11pt;
+    margin: 0;
+    padding: 0;
+    background: lightgray;
+}
+.userpanel table, .userpanel tr, .userpanel td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    min-height: 0 !important;
+    padding: 8px
+}
+[role=button],button {
+    margin: 0 4px;
+}

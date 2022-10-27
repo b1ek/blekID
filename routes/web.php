@@ -25,8 +25,7 @@ Route::apiResource('/auth', \App\Http\Controllers\AuthController::class);
 Route::apiResource('/login', \App\Http\Controllers\LoginController::class);
 Route::apiResource('/signup', \App\Http\Controllers\LoginController::class);
 Route::apiResource('/qr', \App\Http\Controllers\QrCodeController::class);
-Route::apiResource('/success', \App\Http\Controllers\ResourceController::class);
-Route::get('/admin', function() {return 'in dev';});
+Route::apiResource('/reset', \App\Http\Controllers\PasswordResetController::class);
 
 Route::view('/api/docs', 'api_docs');
 

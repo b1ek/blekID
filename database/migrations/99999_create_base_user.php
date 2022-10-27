@@ -28,7 +28,7 @@ return new class extends Migration
         ));
 
         DB::table('user_session')->insert(array(
-            'uid' => 1,
+            'user' => 1,
             'key' => Str::random(512),
             'used_password' => '',
             'appid' => 0,
@@ -50,6 +50,12 @@ return new class extends Migration
             'created' => time(),
             'deleted' => 0
         ));
+        DB::table('user_names')->insert(array(
+            'uid' => 2,
+            'name' => ENV('ADMIN_LOGIN'),
+            'ip' => '0.0.0.0',
+            'user-agent' => $ua
+        ));
         DB::table('user_password')->insert(array(
             'uid' => 2,
             'hash' => \App\Password::hash(hash('sha512', ENV('ADMIN_PASSWORD')), ENV('ADMIN_LOGIN')),
@@ -60,9 +66,9 @@ return new class extends Migration
         ));
         // make this user an app's admin
         DB::table('app_option')->insert(array(
-            'appid' => 2,
+            'appid' => 1,
             'key' => 'admin',
-            'value' => '1'
+            'value' => 2
         ));
     }
 

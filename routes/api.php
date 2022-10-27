@@ -85,10 +85,48 @@ Route::get('login', function (Request $r) {
     return $token;
 });
 
-Route::middleware('web', AdminSecurity::class)->prefix('admin')->group(function() {
+Route::prefix('admin')->middleware(AdminSecurity::class)->group(function() {
+
+    Route::get('/get_all_users', function (Request $r) {
+        return DB::table('users')->join('apps', 'apps.id', '=', 'users.registrator')->get(array(
+            'users.id',
+            'users.login',
+            'users.email',
+            'users.ip',
+            'users.created',
+            'users.user-agent',
+            'users.deleted',
+            'users.frozen',
+
+            'apps.name as registrator-app',
+            'users.registrator'
+        ));
+    });
+
+    Route::get('/get_all_apps', function (Request $r) {
+        return DB::table('apps')->get(array(
+            'id', 'name', 'public_name'
+        ));
+    });
 
     Route::get('delete/{user}', function (string $user) {
-        DB::table('users')->where('id', $user)->update(array('deleted' => time()));
+        $users = DB::table('users')->where('id', $user)->get();
+        if (count($users) == 0) abort(400);
+
+        if ($users[0]->deleted == 0)
+            DB::table('users')->where('id', $user)->update(array('deleted' => time()));
+        else
+            DB::table('users')->where('id', $user)->update(array('deleted' => 0));
+    });
+
+    Route::get('freeze/{user}', function (string $user) {
+        $users = DB::table('users')->where('id', $user)->get();
+        if (count($users) == 0) abort(400);
+
+        if ($users[0]->frozen == 0)
+            DB::table('users')->where('id', $user)->update(array('frozen' => true));
+        else
+            DB::table('users')->where('id', $user)->update(array('frozen' => false));
     });
 
     Route::get('change_pass/{user}/{pass}', function (string $user, string $pass) {
