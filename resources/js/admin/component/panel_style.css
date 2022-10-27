@@ -1,7 +1,12 @@
 .panel_component .panel_body {
     padding: 6px 10px;
 }
-.panel_body {overflow: auto;}
+
+.panel_body {
+    overflow: auto;
+    max-height: 300px
+}
+
 .panel_component p {
     margin: 0;
     padding-top:6px;

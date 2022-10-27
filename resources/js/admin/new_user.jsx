@@ -9,7 +9,7 @@ export default class NewUser extends React.Component {
         this.state = {
             apps: {
                 loaded: false
-            }
+            },
         }
         fetch('/api/admin/get_all_apps').then((data) => data.json()).then((data) => {
             this.setState({
@@ -28,14 +28,23 @@ export default class NewUser extends React.Component {
 
                 initialValues={{
                     login: '',
-                    password: '',
+                    password: '123',
                     email: '',
                     registrator: 0,
                     ip: '',
                     userag: '',
                 }}
                 onSubmit={(vals) => {
+                    let actual_pwd = vals.password;
+                    vals.password = sha512(vals.password);
                     console.log(vals);
+                    fetch('/api/admin/create_user', {
+                        method: 'POST',
+                        body: JSON.stringify(vals)
+                    }).then(data => data.json()).then((data) => {
+                        this.setState({message: data.message});
+                    });
+                    vals.password = actual_pwd;
                 }}
                 >
 
@@ -70,6 +79,7 @@ export default class NewUser extends React.Component {
                                         ?
 
                                         <Field as='select' name='registrator'>
+                                            <option value={0}>Select one</option>
                                             {
                                                 this.state.apps.data.map((d, i) => {
                                                     return <option value={d.id}>{d["public_name"]}</option>;
@@ -85,6 +95,11 @@ export default class NewUser extends React.Component {
                     </table>
 
                     <button type="submit">Submit</button>
+                    {
+                        this.state.message != undefined ?
+                        <p>{this.state.message}</p>
+                        : null
+                    }
                 </Form>
 
                 </Formik>

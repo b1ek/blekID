@@ -103,6 +103,35 @@ Route::prefix('admin')->middleware(AdminSecurity::class)->group(function() {
         ));
     });
 
+    Route::get('get_all_users_search', function(Request $r) {return redirect('/api/admin/get_all_users');});
+
+    Route::get('get_all_users_search/{string}', function (Request $r, string $pattern) {
+        $pattern = "/.*$pattern.*/i";
+        $found = DB::table('users')->join('apps', 'apps.id', '=', 'users.registrator')->get(array(
+            'users.id',
+            'users.login',
+            'users.email',
+            'users.ip',
+            'users.created',
+            'users.user-agent',
+            'users.deleted',
+            'users.frozen',
+
+            'apps.name as registrator-app',
+            'users.registrator'
+        ));
+
+        $searchd = array();
+
+        foreach ($found as $i => $user) {
+            if (preg_match($pattern, $user->login)) {
+                array_push($searchd, $user);
+            }
+        }
+
+        return $searchd;
+    });
+
     Route::get('/get_all_apps', function (Request $r) {
         return DB::table('apps')->get(array(
             'id', 'name', 'public_name'
@@ -153,6 +182,25 @@ Route::prefix('admin')->middleware(AdminSecurity::class)->group(function() {
         if (!$insert) return -1;
         return 0;
 
+    });
+
+    Route::post('create_user', function(Request $r) {
+
+        $data = json_decode($r->getContent());
+
+
+        $created = \App\Account::make(array(
+            'ip' => $data->ip,
+            'useragent' => $data->userag,
+            'appid' => $data->registrator,
+            'login' => $data->login,
+            'email' => $data->email,
+            'password' => $data->password,
+            'name' => $data->login,
+        ));
+
+        if ($created) return array('message' => 'User ' . $data->login . ' created successfully.');
+        return array('message' => 'Error happened!');
     });
 
 

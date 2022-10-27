@@ -64,16 +64,13 @@ export default class Users extends React.Component {
             }
         }
 
-        fetch('/api/admin/get_all_users').then((data)=>data.json()).then((data) => {
-            this.setState({
-                userData: {
-                    loaded: true,
-                    users: data,
-                }
-            });
-        });
-
         this.reloadUsers = this.reloadUsers.bind(this);
+        this.searchUsers = this.searchUsers.bind(this);
+        this.search = React.createRef();
+    }
+
+    componentDidMount() {
+        this.reloadUsers();
     }
 
     reloadUsers() {
@@ -93,6 +90,19 @@ export default class Users extends React.Component {
         });
     }
 
+    searchUsers(pattern) {
+        fetch('/api/admin/get_all_users_search/' + pattern).then(data => data.json()).then((data) => {
+            this.setState({
+                userData: {
+                    loaded: true,
+                    users: data
+                }
+            });
+        });
+
+        this.setState({userData: {loaded:false}});
+    }
+
     render () {
 
         const newUser = () => {
@@ -101,17 +111,21 @@ export default class Users extends React.Component {
 
         return (
             <PanelComponent title='Users' className='userpanel'>
-                <p>User control panel (<a href='#' onClick={() => {}}>Reload</a>)</p>
+                <p>User control panel (<a href='#' onClick={this.reloadUsers}>Reload</a>)</p>
 
                 <p style={{margin:'6px 0','...button': {margin: 3}}}>
                 <button onClick={newUser}>Add new user...</button>
+                <br/>
+                <br/>
+                Search for user: <input type='text' ref={this.search} ></input>
+                <button onClick={() => {this.searchUsers(this.search.current.value)}}>Search</button>
                 </p>
                 {
                     this.state.userData.loaded == false ?
                         <p align='center'>Please wait, user data is being loaded...<br/><img src='/static/loading.gif'></img></p>
                         :
                         <table width={300}>
-                            <tbody>
+                            <tbody style={{maxHeight: 300, overflowY: 'auto'}}>
                                 <tr>
                                     <td>actions</td>
                                     <td>id</td>

@@ -25,8 +25,9 @@ export default function Panel(props) {
 
     const Routes = {
         users: <Users setRoute={FsetRoute}/>,
+        apps: <p>Nice try</p>,
         welcome: <Welcome />,
-        newUser: <NewUser />
+        newUser: <NewUser />,
     }
 
     return (
@@ -39,6 +40,7 @@ export default function Panel(props) {
                     <td className='panel left'>
                         <ul className='panel_links'>
                             <li><a href='#' onClick={() => {FsetRoute('users')}}>Users</a></li>
+                            <li><a href='#' onClick={() => {FsetRoute('apps`')}}>Apps</a></li>
                         </ul>
                     </td>
                     <td className='panel right'>
