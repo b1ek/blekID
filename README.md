@@ -10,10 +10,7 @@ Translated languages are: Japanese, Russian, Ukrainian, Chinese, English
 ## Running an instance
 ```
 cd to/the/directory
-composer install
-npm install
-npm run build
-docker-compose up -d
+./build.sh
 curl localhost:10084
 ```
 
