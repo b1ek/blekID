@@ -35,15 +35,21 @@ export default class NewUser extends React.Component {
                     userag: '',
                 }}
                 onSubmit={(vals) => {
+
+                    // hash the password
                     let actual_pwd = vals.password;
                     vals.password = sha512(vals.password);
-                    console.log(vals);
+
+                    // send the request
                     fetch('/api/admin/create_user', {
                         method: 'POST',
                         body: JSON.stringify(vals)
                     }).then(data => data.json()).then((data) => {
+                        // set the message
                         this.setState({message: data.message});
                     });
+
+                    // change the password back (UX stuff)
                     vals.password = actual_pwd;
                 }}
                 >

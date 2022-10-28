@@ -134,7 +134,7 @@ Route::prefix('admin')->middleware(AdminSecurity::class)->group(function() {
 
     Route::get('/get_all_apps', function (Request $r) {
         return DB::table('apps')->get(array(
-            'id', 'name', 'public_name'
+            'id', 'name', 'public_name', 'contact', 'link', 'created', 'suspended'
         ));
     });
 
@@ -203,5 +203,48 @@ Route::prefix('admin')->middleware(AdminSecurity::class)->group(function() {
         return array('message' => 'Error happened!');
     });
 
+
+    Route::get('/suspend_app/{appid}', function (Request $r, int $appid) {
+        $apps = DB::table('apps')->where('id', $appid)->get();
+        if (count($apps) == 0) abort(400);
+        $app = $apps[0];
+
+        DB::table('apps')->where('id', $appid)->update(array('suspended' => !$app->suspended));
+        return !$app->suspended;
+    });
+
+    Route::get('revoke_secret/{appid}', function (Request $r, int $appid) {
+        $apps = DB::table('apps')->where('id', $appid)->get();
+        if (count($apps) == 0) abort(400);
+        $app = $apps[0];
+
+        $new_secret = App\Secret::create('name', $app->name);
+        DB::table('apps')->where('id', $appid)->update(array('secret' => $new_secret));
+        return $new_secret;
+    });
+
+    Route::any('create_app', function (Request $r) {
+        $user = DB::table('user_session')->where('key', $r->session()->get('user_session'))->get()[0];
+        if ($user->user != 2) abort(401);
+
+        $data = json_decode($r->getContent());
+
+        $secret = \App\Secret::create($data->name, rand(1000, 9999));
+
+        DB::table('apps')->insert(array(
+            'name' => $data->name,
+            'public_name' => $data->pubName,
+            'contact' => $data->contact,
+            'link' => $data->link,
+
+            'secret' => $secret,
+            'created' => time()
+        ));
+
+        return array(
+            'success' => true,
+            'secret' => $secret
+        );
+    });
 
 });

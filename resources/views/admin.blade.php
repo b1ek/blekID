@@ -17,7 +17,8 @@
     @endphp
     var js_data = @json(array(
         'session' => request()->session()->all(),
-        'user_name' => $user_name[0]->name
+        'user_name' => $user_name[0]->name,
+        'god_mode' => $session[0]->user == 2
     ))
     </script>
 

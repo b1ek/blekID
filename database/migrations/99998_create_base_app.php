@@ -15,7 +15,7 @@ return new class extends Migration
     public function up()
     {
         $path = base_path() . '/secret.txt';
-        $secret = App\Secret::create('name', 1);
+        $secret = App\Secret::create('blek_id', 1);
 
         try {unlink($path);}
         catch (Exception) {}
@@ -25,7 +25,9 @@ return new class extends Migration
             'name' => 'blek_id',
             'public_name' => 'blek! ID',
             'created' => time(),
-            'secret' => $secret
+            'secret' => $secret,
+            'contact' => 'me@blek.codes',
+            'link' => 'id.blek.codes'
         ));
         /*DB::table('app_option')->insert(array(
             'appid' => 1,

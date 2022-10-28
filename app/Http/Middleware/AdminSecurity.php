@@ -17,7 +17,7 @@ class AdminSecurity
      */
     public function handle(Request $request, Closure $next)
     {
-        # if (ENV('APP_DEBUG')) return $next($request);
+        if (ENV('APP_DEBUG')) return $next($request);
 
         if (!$request->session()->has('user_session')) abort(403);
         $s = $request->session();

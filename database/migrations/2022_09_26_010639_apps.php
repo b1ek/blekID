@@ -19,6 +19,9 @@ return new class extends Migration
             $blue->string('public_name');
             $blue->bigInteger('created', false, true);
             $blue->text('secret');
+            $blue->text('contact');
+            $blue->text('link');
+            $blue->boolean('suspended')->default(false);
         });
     }
 

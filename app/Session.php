@@ -79,7 +79,21 @@ class Session {
      * @param $hashed Whether the password was hashed on server side
      * @return int|stdClass stdClass with session data if session exists, 1 if session is not active, 2 if no user is with this session, 3 if passwords dont match, 4 if session expired
      */
-    public static function check($key, $pass, $hashed = false) {
+    public static function check($key = null, $pass = null, $hashed = false) {
+
+        if (
+            // if key doesnt exists anywhere
+            ($key == null && !request()->session()->has('user_session')) ||
+            // if password doesnt exists anywhere
+            ($pass == null && !request()->session()->has('used_pass'))
+        )
+            return false;
+
+        if ($key == null && !(request()->session()->has('user_session'))) return false;
+        if ($key == null) $key = request()->session()->get('user_session', 'none');
+
+        if ($pass == null && !(request()->session()->has('user_session'))) return false;
+        if ($pass == null) { $pass = request()->session()->get('used_pass', 'none'); $hashed = true; }
 
         $session = DB::table('user_session')->where('key', $key)->where('active', true)->get();
         if (count($session) == 0) return 1;

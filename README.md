@@ -7,10 +7,12 @@
 If you know any languages other than english, please consider contributing to translating blek! ID. All translation files are stored in `/lang`. To add a new translation, fork the project, push your commits and create a pull request.<br/>
 Translated languages are: Japanese, Russian, Ukrainian, Chinese, English
 
-## Building
+## Running an instance
 ```
 cd to/the/directory
 composer install
+npm install
+npm run build
 docker-compose up -d
 curl localhost:10084
 ```
