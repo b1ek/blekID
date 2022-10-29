@@ -20,7 +20,6 @@ class AutoMigration
     {
         if (!Schema::hasTable('migrations')) {
             Artisan::call('migrate:refresh --force');
-            Cache::put('migrated', true);
         }
 
         return $next($request);

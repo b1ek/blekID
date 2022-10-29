@@ -1,0 +1,34 @@
+#!/usr/bin/bash
+
+STDOUT=1
+SILENT=false
+
+if [ "$1" = silent ]; then
+	STDOUT=.\/build.log
+	SILENT=true
+fi
+
+if [ -f .env ]; then
+	echo
+	echo blek! ID is already installed! Please remove files and folders from .gitignore to continue. 2>&1
+	echo
+	exit
+fi
+
+if [SILENT]; then
+	echo Installing blek! ID
+else
+	echo Installing blek! ID silently...
+fi
+
+echo
+
+cp .env.example .env
+composer install 1> $STDOUT 2> $STDOUT
+php artisan key:generate 1> $STDOUT 2> $STDOUT
+docker-compose up -d 1> $STDOUT 2> $STDOUT
+rm -rf package-lock.json node_modules 1> $STDOUT 2> $STDOUT
+docker exec -it blekid_sail_1 npm install 1> $STDOUT 2> $STDOUT
+docker exec -it blekid_sail_1 npm run build 1> $STDOUT 2> $STDOUT
+
+echo Done!
